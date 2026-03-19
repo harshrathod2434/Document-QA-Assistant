@@ -1,0 +1,17 @@
+# Virtual environment
+venv/
+
+# Environment variables (API keys)
+.env
+
+# ChromaDB storage
+chroma_db/
+
+# Temp uploads
+temp_uploads/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store

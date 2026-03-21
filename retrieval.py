@@ -6,7 +6,7 @@ document chunks and generating answers using OpenAI GPT-4o-mini.
 from typing import Dict, List, Any
 
 from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
 from config import OPENAI_API_KEY, OPENAI_LLM_MODEL, TOP_K_RESULTS, QA_SYSTEM_PROMPT

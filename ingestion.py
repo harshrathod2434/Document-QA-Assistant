@@ -8,8 +8,8 @@ Pipeline: file → extraction → multimodal image description → combine → c
 import os
 from typing import List, Callable, Optional
 
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from config import CHUNK_SIZE, CHUNK_OVERLAP, TEMP_UPLOAD_DIR
 from extraction import extract_content

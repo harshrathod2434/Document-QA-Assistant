@@ -17,7 +17,7 @@ def get_openai_client() -> OpenAI:
     """Create and return an OpenAI client."""
     if not OPENAI_API_KEY or OPENAI_API_KEY == "your_openai_api_key_here":
         raise ValueError(
-            "OPENAI_API_KEY is not set. Please add your API key to the .env file."
+            "OPENAI_API_KEY is not set. Please add your API key in Streamlit Secrets."
         )
     return OpenAI(api_key=OPENAI_API_KEY)
 

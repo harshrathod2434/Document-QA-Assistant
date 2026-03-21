@@ -115,8 +115,8 @@ with st.sidebar:
     
     # API Key check
     if not OPENAI_API_KEY or OPENAI_API_KEY == "your_openai_api_key_here":
-        st.error("⚠️ **OPENAI_API_KEY** not set!\n\nPlease add your API key to the `.env` file.")
-        st.code("OPENAI_API_KEY=sk-your_actual_key", language="bash")
+        st.error("⚠️ **OPENAI_API_KEY** not set!\n\nPlease add your API key in Streamlit Secrets.")
+        st.code('OPENAI_API_KEY = "sk-your_actual_key"', language="toml")
         st.stop()
     
     # File uploader

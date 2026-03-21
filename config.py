@@ -1,16 +1,13 @@
 """
 Configuration module for the Multimodal RAG application.
-Loads environment variables and defines application constants.
+Loads Streamlit secrets and defines application constants.
 """
 
 import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
+import streamlit as st
 
 # ── API Configuration ──────────────────────────────────────────────────────────
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", "")
 
 # ── Model Configuration ────────────────────────────────────────────────────────
 OPENAI_LLM_MODEL = "gpt-4o-mini"          # Cheapest GPT-4 class model

@@ -1,8 +1,9 @@
 # Virtual environment
 venv/
 
-# Environment variables (API keys)
+# Environment variables / secrets (API keys)
 .env
+.streamlit/secrets.toml
 
 # ChromaDB storage
 chroma_db/

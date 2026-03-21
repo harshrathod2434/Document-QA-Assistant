@@ -7,7 +7,10 @@ import os
 import streamlit as st
 
 # ── API Configuration ──────────────────────────────────────────────────────────
-OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", "")
+try:
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+except (KeyError, FileNotFoundError):
+    OPENAI_API_KEY = ""
 
 # ── Model Configuration ────────────────────────────────────────────────────────
 OPENAI_LLM_MODEL = "gpt-4o-mini"          # Cheapest GPT-4 class model

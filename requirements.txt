@@ -1,18 +1,17 @@
-streamlit==1.45.1
+streamlit==1.50.0
 
-langchain==0.3.26
-langchain-core==0.3.68
-langchain-community==0.3.27
-langchain-openai==0.3.28
-langchain-chroma==0.2.4
-langchain-text-splitters==0.3.8
+langchain==0.3.28
+langchain-chroma==0.2.6
+langchain-community==0.3.31
+langchain-core==0.3.83
+langchain-openai==0.3.35
+langchain-text-splitters==0.3.11
 
-chromadb==0.5.23
-protobuf==3.20.3
+chromadb==1.5.5
 
-openai==1.93.0
+openai==2.29.0
 
-PyMuPDF==1.26.1
+PyMuPDF==1.26.5
 python-docx==1.2.0
 python-pptx==1.0.2
-Pillow==11.2.1
+pillow==11.3.0

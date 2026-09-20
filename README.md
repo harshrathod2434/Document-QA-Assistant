@@ -1,70 +1,68 @@
-# 📚 Document QA Assistant
+# Lumen — Grounded Document Intelligence
 
-A multimodal document question-answering web application (RAG system) built with **LangChain**, **Streamlit**, and **OpenAI**.
+A portfolio-grade multimodal RAG workspace with a custom Next.js interface and a FastAPI/LangChain service. Upload reports, papers, presentations, or images; ask natural-language questions; and inspect the passages used to produce every answer.
 
-Upload documents (PDF, DOCX, PPTX, images) and ask questions — the system answers using both text and diagram understanding.
+![Next.js](https://img.shields.io/badge/Next.js-16-111111?logo=nextdotjs)
+![FastAPI](https://img.shields.io/badge/FastAPI-Python-05998b?logo=fastapi)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-1c3c3c)
+![OpenAI](https://img.shields.io/badge/OpenAI-Multimodal-412991?logo=openai)
 
-## ✨ Features
+## Product highlights
 
-- **Multi-format support**: PDF, DOCX, PPTX, PNG, JPG
-- **Multimodal understanding**: Extracts and interprets diagrams/images using GPT-4o-mini Vision
-- **RAG pipeline**: LangChain chunking → OpenAI embeddings → ChromaDB vector store → Retrieval QA
-- **Persistent storage**: ChromaDB saves embeddings locally for reuse
-- **Source citations**: Answers include file name, page/slide references
-- **Flexible queries**: Ask questions, generate quizzes, true/false statements, summaries
+- Bespoke responsive interface built with React, TypeScript, and accessible controls
+- Drag-and-drop source library for PDF, DOCX, PPTX, PNG, and JPG files
+- Multimodal extraction for text, tables, diagrams, and embedded imagery
+- LangChain retrieval with OpenAI embeddings and persistent ChromaDB storage
+- Grounded answers with page/slide citations and a dedicated evidence drawer
+- Optimistic upload feedback, useful empty/loading/error states, and mobile navigation
+- API boundary that keeps secrets and document processing out of the browser
 
-## 🚀 Setup
+## Architecture
+
+```text
+Next.js client
+  ├─ document library + upload experience
+  ├─ research conversation UI
+  └─ citation/evidence explorer
+              │ REST
+FastAPI service
+  ├─ PyMuPDF / python-docx / python-pptx extraction
+  ├─ OpenAI vision descriptions
+  ├─ LangChain chunking + embeddings
+  └─ ChromaDB retrieval + grounded generation
+```
+
+## Run locally
+
+### Backend
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/harshrathod2434/Document-QA-Assistant.git
-cd Document-QA-Assistant
-
-# 2. Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
-# venv\Scripts\activate   # Windows
-
-# 3. Install dependencies
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-
-# 4. Add your OpenAI API key
-echo "OPENAI_API_KEY=sk-your-key-here" > .env
-
-# 5. Run the app
-streamlit run app.py
+cp .env.example .env
+# Add your OpenAI key to .env
+uvicorn server:app --reload --port 8000
 ```
 
-The app will open at **http://localhost:8501**.
+### Frontend
 
-## 📂 Project Structure
+In a second terminal:
 
-```
-├── app.py              # Streamlit UI
-├── config.py           # Configuration & constants
-├── extraction.py       # Text & image extraction (PDF, DOCX, PPTX)
-├── multimodal.py       # OpenAI Vision: image → text description
-├── ingestion.py        # Pipeline: extract → describe → chunk
-├── embedding.py        # OpenAI embeddings + ChromaDB storage
-├── retrieval.py        # RetrievalQA chain with source references
-├── requirements.txt    # Python dependencies
-└── .env                # API key (not tracked by git)
+```bash
+npm install
+npm run dev
 ```
 
-## 🔧 Configuration
+Open [http://localhost:3000](http://localhost:3000). Set `NEXT_PUBLIC_API_URL` if the API is not available at `http://127.0.0.1:8000`.
 
-| Setting | Value | File |
-|---|---|---|
-| LLM Model | `gpt-4o-mini` | `config.py` |
-| Vision Model | `gpt-4o-mini` | `config.py` |
-| Embedding Model | `text-embedding-3-small` | `config.py` |
-| Chunk Size | 500 tokens | `config.py` |
-| Chunk Overlap | 100 tokens | `config.py` |
-| Top-K Results | 5 | `config.py` |
+## Deployment
 
-## 📝 Usage
+- Deploy the Next.js frontend to Vercel with `NEXT_PUBLIC_API_URL` set to the public API URL.
+- Deploy the FastAPI service to Render/Railway using:
+  - Build: `pip install -r requirements.txt`
+  - Start: `uvicorn server:app --host 0.0.0.0 --port $PORT`
+- Configure `OPENAI_API_KEY` and `ALLOWED_ORIGINS` on the backend host.
+- Use persistent storage or a managed vector database for production deployments.
 
-1. **Upload** documents via the sidebar
-2. Click **🚀 Process** to extract text, analyze images, and build the vector database
-3. **Ask questions** in the chat — the system answers based on your documents
-4. Click **🗑️ Clear DB** to reset and upload new documents
+The original Streamlit interface remains in `app.py` as a legacy comparison; `server.py` powers the custom frontend.

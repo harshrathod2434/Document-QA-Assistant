@@ -15,7 +15,6 @@ from config import CHUNK_SIZE, CHUNK_OVERLAP, TEMP_UPLOAD_DIR
 from extraction import extract_content
 from multimodal import process_images
 
-
 def save_uploaded_file(uploaded_file) -> str:
     """
     Save a Streamlit UploadedFile to the temp directory.
@@ -23,8 +22,9 @@ def save_uploaded_file(uploaded_file) -> str:
     """
     os.makedirs(TEMP_UPLOAD_DIR, exist_ok=True)
     file_path = os.path.join(TEMP_UPLOAD_DIR, uploaded_file.name)
+    content = uploaded_file.getbuffer() if hasattr(uploaded_file, "getbuffer") else uploaded_file.read()
     with open(file_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
+        f.write(content)
     return file_path
 
 
@@ -62,7 +62,7 @@ def process_single_file(
     
     extracted_pages = extract_content(file_path)
     
-    # Step 2: Process images through Gemini Vision
+    # Step 2: Process images through OpenAI Vision
     for page_data in extracted_pages:
         combined_text_parts = []
         
@@ -175,6 +175,19 @@ def ingest_files(
         return chunked
     
     return []
+
+
+def ingest_paths(
+    file_paths: List[str],
+    status_callback: Optional[Callable[[str], None]] = None,
+) -> List[Document]:
+    """Run the ingestion pipeline for files already saved on disk."""
+    all_documents = []
+    for index, file_path in enumerate(file_paths, 1):
+        if status_callback:
+            status_callback(f"Processing file {index}/{len(file_paths)}: {os.path.basename(file_path)}")
+        all_documents.extend(process_single_file(file_path, status_callback))
+    return chunk_documents(all_documents) if all_documents else []
 
 
 def _format_location(metadata: dict) -> str:

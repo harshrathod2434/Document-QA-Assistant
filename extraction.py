@@ -182,7 +182,7 @@ def extract_from_pptx(file_path: str) -> List[Dict[str, Any]]:
 
 
 def extract_from_image(file_path: str) -> List[Dict[str, Any]]:
-    """Handle standalone image files — pass through as image data for Gemini Vision."""
+    """Handle standalone image files — pass through as image data for OpenAI Vision."""
     filename = os.path.basename(file_path)
     ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "png"
     

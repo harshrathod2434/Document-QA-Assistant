@@ -1,16 +1,16 @@
 """
 Configuration module for the Multimodal RAG application.
-Loads Streamlit secrets and defines application constants.
+Loads environment configuration and defines application constants.
 """
 
 import os
-import streamlit as st
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 # ── API Configuration ──────────────────────────────────────────────────────────
-try:
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-except (KeyError, FileNotFoundError):
-    OPENAI_API_KEY = ""
+load_dotenv(Path(__file__).with_name(".env"))
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # ── Model Configuration ────────────────────────────────────────────────────────
 OPENAI_LLM_MODEL = "gpt-4o-mini"          # Cheapest GPT-4 class model
@@ -55,9 +55,25 @@ Rules:
 4. You CAN generate questions, quizzes, true/false statements, summaries, or any other format the user requests — as long as the content is based on the provided context.
 5. Format your response using proper Markdown:
    - Use **bold**, *italic*, bullet points, and numbered lists
-   - For math equations, use LaTeX notation: $inline$ or $$block$$
    - Use headings (##, ###) to organize longer responses
    - Use tables when comparing information
+
+6. Mathematical Formatting Rules (VERY IMPORTANT):
+   - Every mathematical expression MUST be written in valid LaTeX.
+   - Every inline mathematical expression MUST be wrapped in $...$.
+   - Every standalone equation MUST be wrapped in $$...$$.
+   - Never output raw LaTeX commands in plain text.
+   - Never write expressions like:
+       (\alpha^2 \left( ... \right))
+     or
+       [ E = \int ... ]
+   - Instead write:
+       $\alpha^2 \left( ... \right)$
+     and
+       $$
+       E = \int ...
+       $$
+   - If a formula appears in the source document, convert it to properly formatted LaTeX before including it in the response.
 
 Context:
 {context}
